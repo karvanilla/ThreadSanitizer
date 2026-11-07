@@ -1,0 +1,34 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=6691)
+  Read of size 4 at 0x000102b90000 by thread T2:
+    #0 reader() race.cpp:7 (race:arm64+0x100000760)
+    #1 std::__1::__invoke_result_impl<void, void (*)()>::type std::__1::__invoke[abi:nqe220106]<void (*)()>(void (*&&)()) invoke.h:90 (race:arm64+0x1000009d4)
+    #2 void std::__1::__thread_execute[abi:nqe220106]<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)(), 0ul>(std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)()>&, std::__1::__integer_sequence<unsigned long, 0ul>) thread.h:161 (race:arm64+0x1000009d4)
+    #3 void* std::__1::__thread_proxy[abi:nqe220106]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)()>>(void*) thread.h:169 (race:arm64+0x1000009d4)
+
+  Previous write of size 4 at 0x000102b90000 by thread T1:
+    #0 writer() race.cpp:6 (race:arm64+0x100000720)
+    #1 std::__1::__invoke_result_impl<void, void (*)()>::type std::__1::__invoke[abi:nqe220106]<void (*)()>(void (*&&)()) invoke.h:90 (race:arm64+0x1000009d4)
+    #2 void std::__1::__thread_execute[abi:nqe220106]<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)(), 0ul>(std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)()>&, std::__1::__integer_sequence<unsigned long, 0ul>) thread.h:161 (race:arm64+0x1000009d4)
+    #3 void* std::__1::__thread_proxy[abi:nqe220106]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (*)()>>(void*) thread.h:169 (race:arm64+0x1000009d4)
+
+  Location is global 'shared' at 0x000102b90000 (race+0x100008000)
+
+  Thread T2 (tid=306430, running) created by main thread at:
+    #0 pthread_create <null> (libclang_rt.tsan_osx_dynamic.dylib:arm64e+0x33bac)
+    #1 std::__1::__libcpp_thread_create[abi:nqe220106](_opaque_pthread_t**, void* (*)(void*), void*) pthread.h:182 (race:arm64+0x1000008bc)
+    #2 std::__1::thread::thread[abi:nqe220106]<void (&)(), 0>(void (&)()) thread.h:221 (race:arm64+0x1000008bc)
+    #3 std::__1::thread::thread[abi:nqe220106]<void (&)(), 0>(void (&)()) thread.h:212 (race:arm64+0x1000007c0)
+    #4 main race.cpp:11 (race:arm64+0x1000007c0)
+
+  Thread T1 (tid=306429, finished) created by main thread at:
+    #0 pthread_create <null> (libclang_rt.tsan_osx_dynamic.dylib:arm64e+0x33bac)
+    #1 std::__1::__libcpp_thread_create[abi:nqe220106](_opaque_pthread_t**, void* (*)(void*), void*) pthread.h:182 (race:arm64+0x1000008bc)
+    #2 std::__1::thread::thread[abi:nqe220106]<void (&)(), 0>(void (&)()) thread.h:221 (race:arm64+0x1000008bc)
+    #3 std::__1::thread::thread[abi:nqe220106]<void (&)(), 0>(void (&)()) thread.h:212 (race:arm64+0x1000007b0)
+    #4 main race.cpp:10 (race:arm64+0x1000007b0)
+
+SUMMARY: ThreadSanitizer: data race race.cpp:7 in reader()
+==================
+42
+ThreadSanitizer: reported 1 warnings
